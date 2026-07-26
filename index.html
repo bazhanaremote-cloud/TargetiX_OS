@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TargetiX OS — Прошивка устройства</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .device-img {
+      width: 100%;
+      max-width: 250px;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+    .select-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      font-weight: bold;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+      cursor: pointer;
+    }
+    esp-web-install-button button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    esp-web-install-button button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Картинка устройства -->
+    <img src="device.png" alt="Фото устройства" class="device-img">
+
+    <h1>TargetiX OS</h1>
+    <p>Подключите устройство по USB и выберите версию прошивки.</p>
+
+    <!-- Выпадающий список версий -->
+    <div class="select-group">
+      <label for="version-select">Версия прошивки:</label>
+      <select id="version-select" onchange="updateManifest()">
+        <option value="manifest.json">v2.6 (Рекомендуемая)</option>
+        <!-- В будущем сюда будете добавлять новые версии, например: -->
+        <!-- <option value="manifest-v2.7.json">v2.7 (Новая)</option> -->
+      </select>
+    </div>
+
+    <!-- Кнопка с манифестом по умолчанию -->
+    <esp-web-install-button id="installer" manifest="manifest.json">
+      <button slot="activate">Подключить и прошить</button>
+      <span slot="unsupported">Ваш браузер не поддерживает Web Serial API (используйте Chrome или Edge на ПК).</span>
+    </esp-web-install-button>
+  </div>
+
+  <script>
+    function updateManifest() {
+      const select = document.getElementById('version-select');
+      const installer = document.getElementById('installer');
+      // При выборе другой версии динамически подменяем манифест у кнопки
+      installer.setAttribute('manifest', select.value);
+    }
+  </script>
+
+</body>
+</html>
